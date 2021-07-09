@@ -1,20 +1,12 @@
 ;;; ac-contact.el --- auto complete contact -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2018 by Matthias David
+;; Copyright (C) 2021 by Matthias David
 
 ;; Author:  Matthias David
 ;; Version: 0.0.1
-;; Package-Requires: ((auto-complete "1.5") (cl-lib 0.5))
+;; Package-Requires: ((auto-complete "1.5") (cl-lib 0.5) (bbdb))
 
 ;;; Commentary:
-;; To use this package, add following code to your init.el or .emacs
-;;
-;;    (eval-after-load "auto-complete"
-;;      '(progn
-;;          (ac-conatct-setup)))
-;;
-;;    (add-hook 'git-commit-mode-hook 'ac-ispell-ac-setup)
-;;    (add-hook 'mail-mode-hook 'ac-ispell-ac-setup)
 
 ;;; Code:
 (require 'auto-complete)
@@ -26,31 +18,20 @@
   :group 'auto-complete)
 
 (defface ac-contact-candidate-face
-  '((t (:inherit ac-candidate-face :foreground "DarkGreen")))
+  '((t (:inherit ac-candidate-face :foreground "green")))
   "Face for fuzzy candidate."
   :group 'ac-contact)
 
-(defcustom ac-contact-requires 3
+(defcustom ac-contact-requires 2
   "Minimum input for starting completion."
   :type 'integer
   :group 'ac-contact)
 
 (defun ac-contact-candidate ()
-  "Candidate."
+  "Candidate from bbdb."
     (cl-loop for bbdb-record in (bbdb-records)
 	   for name = (bbdb-record-name bbdb-record)
-	   collect (cons name bbdb-record))
-
-    ;; (delete-dups
-    ;;  (apply
-    ;;   'append
-    ;;   (mapcar (lambda (rec)
-    ;; 		(mapcar (lambda (n) (bbdb-mail-address rec n))
-    ;; 			(bbdb-record-name rec)))
-    ;;           (bbdb-records))))
-  )
-
-
+	   collect (cons name bbdb-record)))
 
 ;;;###autoload
 (defun ac-contact-setup ()
