@@ -60,7 +60,7 @@
 (defun ac-contact-setup ()
   "Declare auto-complete source."
   (interactive)
-  (ac-define-prefix contact
+  (ac-define-source contact
 		    '((candidates . ac-bbdb-candidate)
 		      (match . substring)
 		      (candidate-face . ac-contact-candidate-face)
