@@ -4,7 +4,7 @@
 
 ;; Author:  Matthias David
 ;; Version: 0.0.1
-;; Package-Requires: ((auto-complete "1.4"))
+;; Package-Requires: ((auto-complete "1.5") (cl-lib 0.5))
 
 ;;; Commentary:
 ;; To use this package, add following code to your init.el or .emacs
@@ -18,9 +18,11 @@
 
 ;;; Code:
 (require 'auto-complete)
+(require 'bbdb)
+(require 'cl-lib)
 
 (defgroup ac-contact nil
-  "Auto completion with ispell."
+  "Auto completion with bbdb."
   :group 'auto-complete)
 
 (defface ac-contact-candidate-face
@@ -33,7 +35,7 @@
   :type 'integer
   :group 'ac-contact)
 
-(defun ac-bbdb-candidate ()
+(defun ac-contact-candidate ()
   "Candidate."
     (cl-loop for bbdb-record in (bbdb-records)
 	   for name = (bbdb-record-name bbdb-record)
@@ -48,24 +50,20 @@
     ;;           (bbdb-records))))
   )
 
-;;;###autoload
-(defun ac-contact-ac-setup ()
-  "Add `ac-source-contact' to `ac-sources' and enable `auto-complete' mode"
-  (interactive)
-  (add-to-list 'ac-sources 'ac-source-contact)
-  (unless auto-complete-mode
-    (auto-complete-mode +1)))
+
 
 ;;;###autoload
 (defun ac-contact-setup ()
   "Declare auto-complete source."
   (interactive)
+  (add-to-list 'ac-sources 'ac-source-contact) )
+
   (ac-define-source contact
-		    '((candidates . ac-bbdb-candidate)
+		    '((candidates . ac-contact-candidate)
 		      (match . substring)
 		      (candidate-face . ac-contact-candidate-face)
 		      (requires . ,ac-contact-requires)
-		      (symbol . "C"))))
+		      (symbol . "C")))
 
 
 (provide 'ac-contact)
